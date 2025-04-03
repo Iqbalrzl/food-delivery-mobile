@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/auth/login_or_register.dart';
 import 'package:food_delivery_mobile/components/my_drawer_tile.dart';
+import 'package:food_delivery_mobile/pages/home_page.dart';
+import 'package:food_delivery_mobile/pages/menu_page.dart';
 import 'package:food_delivery_mobile/pages/settings_page.dart';
+import 'package:food_delivery_mobile/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
   void logout(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+
+    if (themeProvider.isDarkMode) {
+      themeProvider.toggleTheme();
+    }
+
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginOrRegister()),
@@ -23,9 +33,9 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 100.0),
             child: Image.asset(
-              'assets/images/NomNomGo-logo.png',
-              width: 150,
-              height: 150,
+              'assets/images/nomnomgo-logo.png',
+              width: 250,
+              height: 250,
             ),
           ),
 
@@ -37,7 +47,21 @@ class MyDrawer extends StatelessWidget {
           MyDrawerTile(
             text: "H O M E",
             icon: Icons.home,
-            onTap: () => Navigator.pop(context),
+            onTap:
+                () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                ),
+          ),
+
+          MyDrawerTile(
+            text: "M E N U",
+            icon: Icons.menu_book,
+            onTap:
+                () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MenuPage()),
+                ),
           ),
 
           MyDrawerTile(

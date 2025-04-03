@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_mobile/data/key_constants.dart';
 import 'package:food_delivery_mobile/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -30,7 +32,7 @@ class SettingsPage extends StatelessWidget {
                   "Dark Mode",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.inversePrimary,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
                 CupertinoSwitch(
@@ -39,12 +41,19 @@ class SettingsPage extends StatelessWidget {
                         context,
                         listen: false,
                       ).isDarkMode,
-                  onChanged:
-                      (value) =>
-                          Provider.of<ThemeProvider>(
-                            context,
-                            listen: false,
-                          ).toggleTheme(),
+                  onChanged: (value) async {
+                    final themeProvider = Provider.of<ThemeProvider>(
+                      context,
+                      listen: false,
+                    );
+                    themeProvider.toggleTheme();
+                    final SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs.setBool(
+                      KeyConstants.themeModeKey,
+                      themeProvider.isDarkMode,
+                    );
+                  },
                 ),
               ],
             ),

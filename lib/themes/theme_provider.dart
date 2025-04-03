@@ -3,7 +3,7 @@ import 'package:food_delivery_mobile/themes/dark_mode.dart';
 import 'package:food_delivery_mobile/themes/light_mode.dart';
 
 class ThemeProvider with ChangeNotifier {
-  ThemeData _themeData = darkMode;
+  ThemeData _themeData = lightMode;
 
   ThemeData get themeData => _themeData;
 
