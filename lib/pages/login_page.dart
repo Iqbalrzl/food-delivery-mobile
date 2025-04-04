@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/components/my_button.dart';
 import 'package:food_delivery_mobile/components/my_textfield.dart';
+import 'package:food_delivery_mobile/data/key_constants.dart';
 import 'package:food_delivery_mobile/pages/home_page.dart';
+import 'package:food_delivery_mobile/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
@@ -23,8 +27,25 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Future<void> initThemeMode() async {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool repeat = prefs.getBool(KeyConstants.themeModeKey) ?? false;
+
+    if (themeProvider.isDarkMode != repeat) {
+      themeProvider.toggleTheme();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initThemeMode();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
@@ -33,7 +54,9 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/nomnomgo-logo.png',
+                themeProvider.isDarkMode
+                    ? 'assets/images/nomnomgo-logo-dark.png'
+                    : 'assets/images/nomnomgo-logo.png',
                 width: 400,
                 height: 400,
               ),

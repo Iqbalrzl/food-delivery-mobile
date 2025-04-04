@@ -20,7 +20,10 @@ class ListProductByCategory extends StatelessWidget {
           return Center(
             child: Text(
               "Product not found.",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).colorScheme.inversePrimary,
+              ),
             ),
           );
         }

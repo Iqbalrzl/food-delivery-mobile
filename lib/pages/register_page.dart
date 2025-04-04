@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/components/my_button.dart';
 import 'package:food_delivery_mobile/components/my_textfield.dart';
+import 'package:food_delivery_mobile/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -19,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
@@ -27,7 +30,9 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/nomnomgo-logo.png',
+                themeProvider.isDarkMode
+                    ? 'assets/images/nomnomgo-logo-dark.png'
+                    : 'assets/images/nomnomgo-logo.png',
                 width: 400,
                 height: 400,
               ),

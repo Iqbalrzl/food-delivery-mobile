@@ -22,3 +22,17 @@ class CartItem {
 
   CartItem({required this.product, this.quantity = 1});
 }
+
+class User {
+  final String email;
+  final String password;
+  final String username;
+  final String location;
+
+  User({
+    required this.email,
+    required this.password,
+    required this.username,
+    required this.location,
+  });
+}

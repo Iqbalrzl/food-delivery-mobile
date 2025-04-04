@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MenuCategoryName extends StatelessWidget {
+class MenuCategoryDivider extends StatelessWidget {
   final String categoryName;
-  const MenuCategoryName({super.key, required this.categoryName});
+  const MenuCategoryDivider({super.key, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {

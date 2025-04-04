@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/components/my_drawer.dart';
-import 'package:food_delivery_mobile/data/key_constants.dart';
 import 'package:food_delivery_mobile/pages/cart_page.dart';
-import 'package:food_delivery_mobile/themes/theme_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:food_delivery_mobile/pages/profile_page.dart';
 import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,22 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    initThemeMode();
-  }
-
-  Future<void> initThemeMode() async {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool repeat = prefs.getBool(KeyConstants.themeModeKey) ?? false;
-
-    if (themeProvider.isDarkMode != repeat) {
-      themeProvider.toggleTheme();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +52,21 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(
               Icons.shopping_cart,
               color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 10.0),
+            child: GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              },
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/images/avatar-default.jpg"),
+              ),
             ),
           ),
         ],

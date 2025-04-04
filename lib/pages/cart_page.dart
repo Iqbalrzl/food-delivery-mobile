@@ -38,7 +38,7 @@ class CartPage extends StatelessWidget {
                           ),
                           title: Text(cartItem.product.name),
                           subtitle: Text(
-                            "\$${cartItem.product.price.toStringAsFixed(2)}",
+                            "IDR ${cartItem.product.price.toStringAsFixed(2)}",
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -73,7 +73,7 @@ class CartPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "Total: \$${cartProvider.totalPrice.toStringAsFixed(2)}",
+                          "Total: IDR ${cartProvider.totalPrice.toStringAsFixed(2)}",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
