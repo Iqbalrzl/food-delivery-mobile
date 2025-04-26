@@ -21,7 +21,9 @@ class OrderHistoryPage extends StatelessWidget {
 
           // Memastikan bahwa orderHistory tidak kosong
           if (orderHistory.isEmpty) {
-            return const Center(child: CircularProgressIndicator()); // Menunggu data dummy ditambahkan
+            return const Center(
+              child: CircularProgressIndicator(),
+            ); // Menunggu data dummy ditambahkan
           }
 
           return ListView.builder(
@@ -30,7 +32,9 @@ class OrderHistoryPage extends StatelessWidget {
               final order = orderHistory[index];
               return ListTile(
                 leading: const Icon(Icons.fastfood),
-                title: Text(order.product.name), // Menampilkan nama produk dari OrderHistory
+                title: Text(
+                  order.product.name,
+                ), // Menampilkan nama produk dari OrderHistory
                 subtitle: Text(
                   'Rp ${order.totalPrice} - ${order.orderDate.toLocal().toString().split(' ')[0]}', // Menampilkan harga dan tanggal
                 ),
@@ -43,6 +47,7 @@ class OrderHistoryPage extends StatelessWidget {
   }
 }
 
+//Comment jangan diapa"in, ini yang di bawah untuk saat sudah ada database
 /*class OrderHistoryPage extends StatelessWidget {
   // Data riwayat pesanan disimpan di sini
   static List<Map<String, dynamic>> orderHistory = [];
