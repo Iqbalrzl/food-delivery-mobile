@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/auth/login_or_register.dart';
 import 'package:food_delivery_mobile/components/my_button.dart';
 import 'package:food_delivery_mobile/components/my_textfield.dart';
-import 'package:food_delivery_mobile/pages/login_page.dart';
+//import 'package:food_delivery_mobile/pages/login_page.dart';
 import 'package:food_delivery_mobile/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 

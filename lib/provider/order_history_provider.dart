@@ -17,20 +17,20 @@ class OrderHistoryProvider extends ChangeNotifier {
   void addDummyData() {
     final dummyProduct1 = Product(
       id: '1',
-      category: 'Food',
-      name: 'Burger',
-      description: 'Delicious beef burger',
-      price: 15000,
-      imageUrl: 'https://example.com/burger.jpg',
+      category: 'main',
+      name: 'Nasi Goreng Spesial',
+      description: "Nasi goreng dengan topping ayam, telur, dan sayuran.",
+      price: 25000,
+      imageUrl: "assets/images/food1.jpg",
     );
 
     final dummyProduct2 = Product(
       id: '2',
-      category: 'Food',
-      name: 'Pizza',
-      description: 'Cheese pizza with extra toppings',
-      price: 30000,
-      imageUrl: 'https://example.com/pizza.jpg',
+      category: 'main',
+      name: 'Mie Ayam Bakso',
+      description: "Mie ayam dengan bakso dan kuah kaldu lezat.",
+      price: 20000,
+      imageUrl: "assets/images/food2.jpg",
     );
 
     final dummyOrder1 = OrderHistory(
@@ -38,7 +38,9 @@ class OrderHistoryProvider extends ChangeNotifier {
       product: dummyProduct1,
       quantity: 2,
       totalPrice: dummyProduct1.price * 2,
-      orderDate: DateTime.now().subtract(const Duration(days: 1)), // Pesanan kemarin
+      orderDate: DateTime.now().subtract(
+        const Duration(days: 1),
+      ), // Pesanan kemarin
     );
 
     final dummyOrder2 = OrderHistory(
@@ -46,7 +48,9 @@ class OrderHistoryProvider extends ChangeNotifier {
       product: dummyProduct2,
       quantity: 1,
       totalPrice: dummyProduct2.price,
-      orderDate: DateTime.now().subtract(const Duration(days: 2)), // Pesanan dua hari lalu
+      orderDate: DateTime.now().subtract(
+        const Duration(days: 2),
+      ), // Pesanan dua hari lalu
     );
 
     // Menambahkan data dummy ke dalam list
