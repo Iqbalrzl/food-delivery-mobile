@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/components/my_drawer.dart';
 import 'package:food_delivery_mobile/pages/cart_page.dart';
+import 'package:food_delivery_mobile/pages/menu_page.dart';
 import 'package:food_delivery_mobile/pages/profile_page.dart';
 import 'package:lottie/lottie.dart';
 
@@ -70,14 +71,6 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         scrolledUnderElevation: 0,
-        title: Text(
-          "Delivero",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: primaryColor,
-          ),
-        ),
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(
@@ -92,27 +85,132 @@ class _HomePageState extends State<HomePage> {
         centerTitle: false,
         actions: [
           TextButton(
-            onPressed: () {},
-            child: Text(
-              "About",
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 14,
-              ),
+  onPressed: () {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
           ),
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              "Delivery",
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 14,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "About This App",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-            ),
+              SizedBox(height: 20),
+              Text(
+                "NomNomGo is a food delivery application designed to make it easy for users to order their favorite food and have it delivered right to their doorsteps. Whether you're craving a quick snack or a full meal, NomNomGo connects you with a variety of restaurants in your area for fast and convenient delivery.",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Menutup modal
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                ),
+                child: Text("Close"),
+              ),
+            ],
           ),
+        );
+      },
+    );
+  },
+  child: Text(
+    "About",
+    style: TextStyle(
+      color: Colors.black87,
+      fontSize: 14,
+    ),
+  ),
+),
+
+          
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(20),
+           decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), // Sudut kiri atas melengkung
+              topRight: Radius.circular(30), // Sudut kanan atas melengkung
+            ),
+           ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Contact Us",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              SizedBox(height: 20),
+              // Menambahkan teks "Admin" sebelum nomor telepon
+              Text(
+                "Admin",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "0823-7698-3421", // Nomor telepon yang ditampilkan
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  // Menutup bottom sheet
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                ),
+                child: Text("Close"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  
+            },
             child: Text(
               "Contact",
               style: TextStyle(
@@ -131,14 +229,14 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
+                backgroundColor: accentColor,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  shape: CircleBorder(
+                
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               ),
-              child: Text("Sign in"),
+             child :  Icon(Icons.person, color: Colors.white),
             ),
           ),
         ],
@@ -164,23 +262,23 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
-                            color: secondaryColor,
+                            color:accentColor,
                           ),
                         ),
                         Text(
-                          "any Special",
+                          "Every Moment",
                           style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
-                            color: secondaryColor,
+                            color: accentColor,
                           ),
                         ),
                         Text(
-                          "Occasion.",
+                          "by NomNomGo.",
                           style: TextStyle(
-                            fontSize: 36,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: secondaryColor,
+                            color: accentColor,
                           ),
                         ),
                         SizedBox(height: 16),
@@ -196,18 +294,18 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CartPage()),
+                              MaterialPageRoute(builder: (context) => MenuPage()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryColor,
+                            backgroundColor: accentColor,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
                             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                           ),
-                          child: Text("Get Started"),
+                          child: Text("Order Here!"),
                         ),
                       ],
                     ),
@@ -225,26 +323,6 @@ class _HomePageState extends State<HomePage> {
                         
                         // Or keep using your Lottie animation:
                         Lottie.asset('assets/lotties/cat.json'),
-                        
-                        // Add location markers like in the design
-                        Positioned(
-                          top: 50,
-                          right: 80,
-                          child: CircleAvatar(
-                            backgroundColor: primaryColor.withOpacity(0.8),
-                            radius: 20,
-                            child: Icon(Icons.location_on, color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 70,
-                          right: 40,
-                          child: CircleAvatar(
-                            backgroundColor: primaryColor.withOpacity(0.8),
-                            radius: 20,
-                            child: Icon(Icons.location_on, color: Colors.white),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -255,11 +333,11 @@ class _HomePageState extends State<HomePage> {
               
               // Why Choose Us Section
               Text(
-                "Why Delivero?",
+                "Why NomNomGo?",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: secondaryColor,
+                  color: accentColor,
                 ),
               ),
               
@@ -300,7 +378,7 @@ class _HomePageState extends State<HomePage> {
                   child: Icon(
                     Icons.eco,
                     size: 60,
-                    color: yellowAccent,
+                    color: accentColor,
                   ),
                 ),
               ),
