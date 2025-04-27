@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/auth/login_or_register.dart';
 import 'package:food_delivery_mobile/components/my_button.dart';
 import 'package:food_delivery_mobile/components/my_textfield.dart';
-import 'package:food_delivery_mobile/pages/login_page.dart';
 import 'package:food_delivery_mobile/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -38,11 +38,34 @@ class _RegisterPageState extends State<RegisterPage> {
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
           );
-      print('User registered: ${userCredential.user?.email}');
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Registration successful!')));
+      print("UID:${userCredential.user?.uid}");
+      print("EMAIL:${userCredential.user?.email}");
+
+      var response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/api/register'),
+        headers: {'Content-Type': 'application/json'},
+        body: '''{
+        "firebase_uid": "${userCredential.user?.uid}",
+        "email": "${userCredential.user?.email}"
+        }''',
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Registration successful!')));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginOrRegister()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Registration to backend failed: ${response.body}'),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       if (e.code == 'weak-password') {
@@ -117,12 +140,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       context,
                       emailController,
                       passwordController,
-                    );
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginOrRegister(),
-                      ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

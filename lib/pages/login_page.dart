@@ -28,15 +28,17 @@ class _LoginPageState extends State<LoginPage> {
       isLoading = true;
     });
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+      String? uid = userCredential.user!.uid;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('firebase_uid', uid);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Login successful!')));
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
@@ -44,13 +46,12 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email.';
+        errorMessage = 'User not found.';
       } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided.';
+        errorMessage = 'Wrong password.';
       } else {
         errorMessage = 'Login failed. Please try again.';
       }
-
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(errorMessage)));
