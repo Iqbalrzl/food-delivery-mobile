@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 
 class ApiService {
-  final AuthService _authService = AuthService();
   final String api = "http://10.0.2.2:8000";
 
   Future<Map<String, dynamic>> getProfile() async {
