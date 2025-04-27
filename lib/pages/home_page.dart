@@ -26,10 +26,7 @@ class FeatureCard extends StatelessWidget {
           CircleAvatar(
             radius: 24,
             backgroundColor: color,
-            child: Icon(
-              icon,
-              color: Colors.white,
-            ),
+            child: Icon(icon, color: Colors.white),
           ),
           SizedBox(height: 8),
           Text(
@@ -79,15 +76,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: primaryColor,
-            ),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
+          builder:
+              (context) => IconButton(
+                icon: Icon(Icons.menu, color: primaryColor),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
         ),
         centerTitle: false,
         actions: [
@@ -95,30 +90,21 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {},
             child: Text(
               "About",
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 14,
-              ),
+              style: TextStyle(color: Colors.black87, fontSize: 14),
             ),
           ),
           TextButton(
             onPressed: () {},
             child: Text(
               "Delivery",
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 14,
-              ),
+              style: TextStyle(color: Colors.black87, fontSize: 14),
             ),
           ),
           TextButton(
             onPressed: () {},
             child: Text(
               "Contact",
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 14,
-              ),
+              style: TextStyle(color: Colors.black87, fontSize: 14),
             ),
           ),
           Padding(
@@ -186,17 +172,16 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(height: 16),
                         Text(
                           "Order your products at any time and we will deliver them directly to your home.",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black54,
-                          ),
+                          style: TextStyle(fontSize: 14, color: Colors.black54),
                         ),
                         SizedBox(height: 24),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CartPage()),
+                              MaterialPageRoute(
+                                builder: (context) => CartPage(),
+                              ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -205,14 +190,17 @@ class _HomePageState extends State<HomePage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
                           ),
                           child: Text("Get Started"),
                         ),
                       ],
                     ),
                   ),
-                  
+
                   // Right side - Image or Lottie animation
                   Expanded(
                     flex: 6,
@@ -222,10 +210,10 @@ class _HomePageState extends State<HomePage> {
                         // You can use your existing Lottie animation or an image
                         // If you have a delivery person image, use this:
                         // Image.asset("assets/images/delivery-person.png", fit: BoxFit.contain),
-                        
+
                         // Or keep using your Lottie animation:
                         Lottie.asset('assets/lotties/cat.json'),
-                        
+
                         // Add location markers like in the design
                         Positioned(
                           top: 50,
@@ -250,9 +238,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 60),
-              
+
               // Why Choose Us Section
               Text(
                 "Why Delivero?",
@@ -262,9 +250,9 @@ class _HomePageState extends State<HomePage> {
                   color: secondaryColor,
                 ),
               ),
-              
+
               SizedBox(height: 24),
-              
+
               // Feature cards
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -291,17 +279,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              
+
               // Add a decorative element like the leaf in the design
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40),
-                  child: Icon(
-                    Icons.eco,
-                    size: 60,
-                    color: yellowAccent,
-                  ),
+                  child: Icon(Icons.eco, size: 60, color: yellowAccent),
                 ),
               ),
             ],

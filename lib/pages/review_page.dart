@@ -18,14 +18,14 @@ class _ReviewPageState extends State<ReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Ulas ${widget.order.product.name}')),
+      appBar: AppBar(title: Text('${widget.order.product.name} Review')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Beri Rating:',
+              'Give Rating:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
@@ -47,7 +47,7 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Tulis Ulasan:',
+              'Give a Review:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
@@ -55,7 +55,7 @@ class _ReviewPageState extends State<ReviewPage> {
               controller: _reviewController,
               maxLines: 5,
               decoration: InputDecoration(
-                hintText: 'Bagikan pengalaman kamu...',
+                hintText: 'Share your experience...',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -67,21 +67,19 @@ class _ReviewPageState extends State<ReviewPage> {
                   final reviewText = _reviewController.text;
                   if (_rating == 0 || reviewText.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Mohon isi rating dan ulasan!'),
-                      ),
+                      const SnackBar(content: Text('Please fill in both!')),
                     );
                   } else {
                     // Logika simpan bisa ditaruh di sini
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Terima kasih atas ulasannya!'),
+                        content: Text('Thank you for your review!'),
                       ),
                     );
                     Navigator.pop(context); // Kembali ke halaman sebelumnya
                   }
                 },
-                child: const Text('Kirim Ulasan'),
+                child: const Text('Send Review'),
               ),
             ),
           ],
