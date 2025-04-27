@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_mobile/auth/api_service.dart';
+import 'package:food_delivery_mobile/auth/auth_service.dart';
 import 'package:food_delivery_mobile/auth/login_or_register.dart';
 import 'package:food_delivery_mobile/components/my_button.dart';
 
@@ -6,10 +9,20 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _MyWidgetState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _MyWidgetState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
+  final ApiService _apiService = ApiService();
+  final AuthService _authService = AuthService();
+  late Future<Map<String, dynamic>> _userProfileFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _userProfileFuture = _apiService.getProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,33 +32,47 @@ class _MyWidgetState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            const Center(
               child: CircleAvatar(
                 backgroundImage: AssetImage("assets/images/avatar-default.jpg"),
                 radius: 100,
               ),
             ),
-
-            SizedBox(height: 25),
-
-            Center(
-              child: Text("Iqal Mahendra", style: TextStyle(fontSize: 25)),
+            const SizedBox(height: 25),
+            FutureBuilder<Map<String, dynamic>>(
+              future: _userProfileFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                } else if (snapshot.hasData) {
+                  final userProfile = snapshot.data!;
+                  final username =
+                      userProfile["data"]?["username"] ?? "No Username";
+                  return Center(
+                    child: Text(username, style: const TextStyle(fontSize: 25)),
+                  );
+                } else {
+                  return const Center(child: Text("No data available"));
+                }
+              },
             ),
-
-            SizedBox(height: 470),
-
+            const SizedBox(height: 470),
             MyButton(
               onTap: () {
+                _authService.logout();
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginOrRegister()),
+                  MaterialPageRoute(
+                    builder: (context) => const LoginOrRegister(),
+                  ),
                   (route) => false,
                 );
               },
               text: "Logout",
             ),
-
-            SizedBox(height: 80),
+            const SizedBox(height: 80),
           ],
         ),
       ),

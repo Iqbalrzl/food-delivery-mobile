@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/auth/login_or_register.dart';
 import 'package:food_delivery_mobile/provider/cart_provider.dart';
+import 'package:food_delivery_mobile/provider/order_history_provider.dart';
 import 'package:food_delivery_mobile/provider/product_provider.dart';
 import 'package:food_delivery_mobile/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => ProductProvider()),
+        ChangeNotifierProvider(create: (context) => OrderHistoryProvider()),
       ],
       child: const MyApp(),
     ),
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Provider.of<OrderHistoryProvider>(context, listen: false).addDummyData();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const LoginOrRegister(),

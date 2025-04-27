@@ -26,13 +26,26 @@ class CartItem {
 class User {
   final String email;
   final String password;
-  final String username;
-  final String location;
 
-  User({
-    required this.email,
-    required this.password,
-    required this.username,
-    required this.location,
+  User({required this.email, required this.password});
+}
+
+class OrderHistory {
+  final String orderId;
+  final Product product;
+  final int quantity;
+  final double totalPrice;
+  final DateTime orderDate;
+
+  OrderHistory({
+    required this.orderId,
+    required this.product,
+    required this.quantity,
+    required this.totalPrice,
+    required this.orderDate,
   });
+
+  String getOrderDetail() {
+    return '${product.name} x$quantity - Total: Rp $totalPrice';
+  }
 }
