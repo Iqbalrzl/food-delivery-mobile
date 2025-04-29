@@ -6,6 +6,7 @@ import 'package:food_delivery_mobile/data/key_constants.dart';
 import 'package:food_delivery_mobile/pages/home_page.dart';
 import 'package:food_delivery_mobile/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:food_delivery_mobile/pages/admin_login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -144,6 +145,27 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
+
+              const SizedBox(height: 20),
+
+              // ------ Tambahan: Tombol Login Admin ------
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdminLoginPage()),
+                  );
+                },
+                child: Text(
+                  'Login as Admin',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              // --------------------------------------------
             ],
           ),
         ),
