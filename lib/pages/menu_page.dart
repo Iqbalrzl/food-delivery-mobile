@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/components/list_product_by_category.dart';
 import 'package:food_delivery_mobile/components/menu_category_divider.dart';
 import 'package:food_delivery_mobile/components/my_drawer.dart';
+import 'package:food_delivery_mobile/data/api_service.dart';
+import 'package:food_delivery_mobile/data/model.dart';
 import 'package:food_delivery_mobile/pages/cart_page.dart';
 import 'package:food_delivery_mobile/pages/profile_page.dart';
 
@@ -15,6 +17,22 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   String selectedCategory = "MAIN";
   List category = ["MAIN", "DESSERT", "BEVERAGE", "ALACARTE"];
+
+  final ApiService _apiService = ApiService();
+  Profile? _profile;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  void _loadProfile() async {
+    final profile = await _apiService.fetchProfileByUserId();
+    setState(() {
+      _profile = profile;
+    });
+  }
 
   void changeSection(String section) {
     setState(() {
@@ -73,9 +91,25 @@ class _MenuPageState extends State<MenuPage> {
                   MaterialPageRoute(builder: (context) => ProfilePage()),
                 );
               },
-              child: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/avatar-default.jpg"),
-              ),
+              child:
+                  _profile == null
+                      ? const CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                      : CircleAvatar(
+                        backgroundImage:
+                            _profile!.profileImageUrl != null
+                                ? NetworkImage(
+                                  _apiService.fixLocalhostUrl(
+                                    _profile!.profileImageUrl!,
+                                  ),
+                                )
+                                : const AssetImage(
+                                      "assets/images/avatar-default.jpg",
+                                    )
+                                    as ImageProvider,
+                      ),
             ),
           ),
         ],

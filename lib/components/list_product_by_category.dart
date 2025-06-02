@@ -3,9 +3,23 @@ import 'package:food_delivery_mobile/components/menu_tile.dart';
 import 'package:food_delivery_mobile/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
-class ListProductByCategory extends StatelessWidget {
+class ListProductByCategory extends StatefulWidget {
   final String productCategory;
   const ListProductByCategory({super.key, required this.productCategory});
+
+  @override
+  State<ListProductByCategory> createState() => _ListProductByCategoryState();
+}
+
+class _ListProductByCategoryState extends State<ListProductByCategory> {
+  late Future<void> _loadFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFuture =
+        Provider.of<ProductProvider>(context, listen: false).loadProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +27,7 @@ class ListProductByCategory extends StatelessWidget {
       builder: (context, productProvider, child) {
         final filteredProducts =
             productProvider.products
-                .where((product) => product.category == productCategory)
+                .where((product) => product.category == widget.productCategory)
                 .toList();
 
         if (filteredProducts.isEmpty) {

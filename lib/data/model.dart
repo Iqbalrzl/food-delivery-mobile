@@ -1,5 +1,5 @@
 class Product {
-  final String id;
+  final int id;
   final String name;
   final String description;
   final double price;
@@ -14,13 +14,40 @@ class Product {
     required this.price,
     required this.imageUrl,
   });
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'] ?? 0,
+      name: json['name']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
+      price: double.tryParse(json['price'].toString()) ?? 0.0,
+      category: json['category']?.toString() ?? '',
+      imageUrl: json['image_url']?.toString() ?? '',
+    );
+  }
 }
 
 class CartItem {
-  final Product product;
+  final int id;
   int quantity;
+  final double price;
+  final Product product;
 
-  CartItem({required this.product, this.quantity = 1});
+  CartItem({
+    required this.id,
+    required this.quantity,
+    required this.price,
+    required this.product,
+  });
+
+  factory CartItem.fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      id: json['id'],
+      quantity: json['quantity'],
+      price: double.parse(json['price'].toString()),
+      product: Product.fromJson(json['product']),
+    );
+  }
 }
 
 class User {
@@ -30,22 +57,83 @@ class User {
   User({required this.email, required this.password});
 }
 
-class OrderHistory {
-  final String orderId;
-  final Product product;
-  final int quantity;
-  final double totalPrice;
-  final DateTime orderDate;
+class Profile {
+  final int id;
+  final String username;
+  final String? location;
+  final String? profileImageUrl;
 
-  OrderHistory({
-    required this.orderId,
-    required this.product,
-    required this.quantity,
-    required this.totalPrice,
-    required this.orderDate,
+  Profile({
+    required this.id,
+    required this.username,
+    this.location,
+    this.profileImageUrl,
   });
 
-  String getOrderDetail() {
-    return '${product.name} x$quantity - Total: Rp $totalPrice';
+  factory Profile.fromJson(Map<String, dynamic> json) {
+    return Profile(
+      id: json['id'],
+      username: json['username'] ?? '',
+      location: json['location'],
+      profileImageUrl: json['profile_image_url'],
+    );
+  }
+}
+
+class OrderItem {
+  final int id;
+  final int orderId;
+  final int productId;
+  final int quantity;
+  final double price;
+  final Product product;
+
+  OrderItem({
+    required this.id,
+    required this.orderId,
+    required this.productId,
+    required this.quantity,
+    required this.price,
+    required this.product,
+  });
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) {
+    return OrderItem(
+      id: json['id'],
+      orderId: json['order_id'],
+      productId: json['product_id'],
+      quantity: json['quantity'],
+      price: double.tryParse(json['price'].toString()) ?? 0.0,
+      product: Product.fromJson(json['product']),
+    );
+  }
+}
+
+class Order {
+  final int id;
+  final int userId;
+  final double totalPrice;
+  final String status;
+  final List<OrderItem> items;
+
+  Order({
+    required this.id,
+    required this.userId,
+    required this.totalPrice,
+    required this.status,
+    required this.items,
+  });
+
+  factory Order.fromJson(Map<String, dynamic> json) {
+    return Order(
+      id: json['id'],
+      userId: json['user_id'],
+      totalPrice: double.parse(json['total_price']),
+      status: json['status'],
+      items:
+          (json['items'] as List)
+              .map((item) => OrderItem.fromJson(item))
+              .toList(),
+    );
   }
 }

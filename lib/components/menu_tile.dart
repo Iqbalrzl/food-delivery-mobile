@@ -5,7 +5,7 @@ import 'package:food_delivery_mobile/data/model.dart';
 import 'package:provider/provider.dart';
 
 class MenuTile extends StatelessWidget {
-  final String? id;
+  final int? id;
   final String? menuCategory;
   final String? menuTitle;
   final String? menuDesc;
@@ -35,7 +35,7 @@ class MenuTile extends StatelessWidget {
               builder:
                   (context) => MenuDetailPage(
                     product: Product(
-                      id: id ?? "1",
+                      id: id ?? 0,
                       category: menuCategory ?? "main",
                       name: menuTitle ?? "Title",
                       description:
@@ -128,7 +128,7 @@ class MenuTile extends StatelessWidget {
                   Feedback.forTap(context);
                   cartProvider.addToCart(
                     Product(
-                      id: id ?? "1",
+                      id: id ?? 0,
                       category: menuCategory ?? "Main",
                       name: menuTitle ?? "Title",
                       description: menuDesc ?? "Description",

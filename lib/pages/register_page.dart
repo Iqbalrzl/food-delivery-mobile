@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/auth/login_or_register.dart';
 import 'package:food_delivery_mobile/components/my_button.dart';
 import 'package:food_delivery_mobile/components/my_textfield.dart';
+import 'package:food_delivery_mobile/data/api_service.dart';
 import 'package:food_delivery_mobile/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -31,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
     BuildContext context,
     TextEditingController emailController,
     TextEditingController passwordController,
+    ApiService apiService,
   ) async {
     try {
       final userCredential = await FirebaseAuth.instance
@@ -38,19 +39,10 @@ class _RegisterPageState extends State<RegisterPage> {
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
           );
-
-      print("UID:${userCredential.user?.uid}");
-      print("EMAIL:${userCredential.user?.email}");
-
-      var response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/register'),
-        headers: {'Content-Type': 'application/json'},
-        body: '''{
-        "firebase_uid": "${userCredential.user?.uid}",
-        "email": "${userCredential.user?.email}"
-        }''',
+      final response = await apiService.register(
+        userCredential.user!.uid,
+        userCredential.user!.email!,
       );
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         ScaffoldMessenger.of(
           context,
@@ -77,7 +69,6 @@ class _RegisterPageState extends State<RegisterPage> {
       } else {
         errorMessage = 'Registration failed. Please try again.';
       }
-
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(errorMessage)));
@@ -140,6 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       context,
                       emailController,
                       passwordController,
+                      ApiService(),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

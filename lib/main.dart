@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:food_delivery_mobile/auth/login_or_register.dart';
 import 'package:food_delivery_mobile/provider/cart_provider.dart';
 import 'package:food_delivery_mobile/provider/order_history_provider.dart';
@@ -11,6 +12,7 @@ import 'firebase_options.dart';
 void main() async {
   final WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await dotenv.load(fileName: ".env");
   runApp(
     MultiProvider(
       providers: [
@@ -30,7 +32,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Provider.of<OrderHistoryProvider>(context, listen: false).addDummyData();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const LoginOrRegister(),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/data/model.dart';
 
 class ReviewPage extends StatefulWidget {
-  final OrderHistory order;
+  final OrderItem orderItem;
 
-  const ReviewPage({Key? key, required this.order}) : super(key: key);
+  const ReviewPage({super.key, required this.orderItem});
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -16,8 +16,10 @@ class _ReviewPageState extends State<ReviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final product = widget.orderItem.product;
+
     return Scaffold(
-      appBar: AppBar(title: Text('Review ${widget.order.product.name}')),
+      appBar: AppBar(title: Text('Review ${product.name}')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -53,7 +55,7 @@ class _ReviewPageState extends State<ReviewPage> {
             TextField(
               controller: _reviewController,
               maxLines: 5,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Share your experience...',
                 border: OutlineInputBorder(),
               ),

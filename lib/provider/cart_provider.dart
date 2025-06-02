@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import '../data/model.dart';
+import 'package:food_delivery_mobile/data/api_service.dart';
+import 'package:food_delivery_mobile/data/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider with ChangeNotifier {
   final List<CartItem> _items = [];
+  final ApiService _apiService = ApiService();
 
   List<CartItem> get items => _items;
 
@@ -13,39 +16,74 @@ class CartProvider with ChangeNotifier {
     );
   }
 
-  void addToCart(Product product) {
+  Future<void> fetchCartItems() async {
+    try {
+      _items.clear();
+      final fetchedItems = await _apiService.fetchCartItems();
+      _items.addAll(fetchedItems);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error fetching cart items: $e');
+    }
+  }
+
+  Future<void> addToCart(Product product) async {
     int index = _items.indexWhere((item) => item.product.id == product.id);
 
     if (index >= 0) {
-      _items[index].quantity++;
+      final updatedQuantity = _items[index].quantity + 1;
+      await _apiService.updateCartItemQuantity(
+        _items[index].id,
+        updatedQuantity,
+      );
+      _items[index].quantity = updatedQuantity;
     } else {
-      _items.add(CartItem(product: product));
+      await _apiService.addCartItem(product.id, product.price, 1);
+      await fetchCartItems();
     }
 
     notifyListeners();
   }
 
-  void removeFromCart(Product product) {
-    _items.removeWhere((item) => item.product.id == product.id);
-    notifyListeners();
-  }
-
-  void updateQuantity(Product product, int quantity) {
-    int index = _items.indexWhere((item) => item.product.id == product.id);
-
+  Future<void> updateQuantity(CartItem cartItem, int quantity) async {
+    int index = _items.indexWhere((item) => item.id == cartItem.id);
     if (index >= 0) {
       if (quantity > 0) {
+        await _apiService.updateCartItemQuantity(cartItem.id, quantity);
         _items[index].quantity = quantity;
       } else {
-        _items.removeAt(index);
+        await removeFromCart(cartItem);
       }
+      notifyListeners();
     }
-
-    notifyListeners();
   }
 
-  void clearCart() {
-    _items.clear();
-    notifyListeners();
+  Future<void> removeFromCart(CartItem cartItem) async {
+    try {
+      await _apiService.deleteCartItem(cartItem.id);
+      _items.removeWhere((item) => item.id == cartItem.id);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Failed to delete cart item: $e');
+    }
+  }
+
+  Future<void> clearCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('user_id');
+    if (userId != null) {
+      await _apiService.clearCart(userId);
+      _items.clear();
+      notifyListeners();
+    }
+  }
+
+  Future<bool> checkout() async {
+    final success = await ApiService().checkoutCart();
+    if (success) {
+      _items.clear();
+      notifyListeners();
+    }
+    return success;
   }
 }

@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/components/my_button.dart';
 import 'package:food_delivery_mobile/components/my_textfield.dart';
+import 'package:food_delivery_mobile/data/api_service.dart';
 import 'package:food_delivery_mobile/data/key_constants.dart';
+import 'package:food_delivery_mobile/pages/admin_page.dart';
 import 'package:food_delivery_mobile/pages/home_page.dart';
 import 'package:food_delivery_mobile/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +36,8 @@ class _LoginPageState extends State<LoginPage> {
             password: passwordController.text.trim(),
           );
       String? uid = userCredential.user!.uid;
+      final apiService = ApiService();
+      await apiService.fetchAndStoreUserId(uid);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('firebase_uid', uid);
       ScaffoldMessenger.of(
@@ -59,7 +63,6 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('An unexpected error occurred.')),
       );
-      print(e);
     } finally {
       setState(() {
         isLoading = false;
@@ -144,6 +147,22 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 25),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdminPage()),
+                  );
+                },
+                child: Text(
+                  "Login as Admin",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_mobile/components/my_drawer.dart';
+import 'package:food_delivery_mobile/data/api_service.dart';
+import 'package:food_delivery_mobile/data/model.dart';
+import 'package:food_delivery_mobile/pages/cart_page.dart';
 import 'package:food_delivery_mobile/pages/menu_page.dart';
+import 'package:food_delivery_mobile/pages/profile_page.dart';
 import 'package:lottie/lottie.dart';
 
 class FeatureCard extends StatelessWidget {
@@ -17,7 +21,7 @@ class FeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 80,
       child: Column(
         children: [
@@ -58,6 +62,22 @@ class _HomePageState extends State<HomePage> {
   static const Color pinkAccent = Color(0xFFF8A5A5); // Pink
   static const Color silver = Color.fromARGB(255, 131, 127, 127);
 
+  final ApiService _apiService = ApiService();
+  Profile? _profile;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  void _loadProfile() async {
+    final profile = await _apiService.fetchProfileByUserId();
+    setState(() {
+      _profile = profile;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -75,6 +95,51 @@ class _HomePageState extends State<HomePage> {
             color: primaryColor,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartPage()),
+              );
+            },
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 10.0),
+            child: GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              },
+              child:
+                  _profile == null
+                      ? const CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                      : CircleAvatar(
+                        backgroundImage:
+                            _profile!.profileImageUrl != null
+                                ? NetworkImage(
+                                  _apiService.fixLocalhostUrl(
+                                    _profile!.profileImageUrl!,
+                                  ),
+                                )
+                                : const AssetImage(
+                                      "assets/images/avatar-default.jpg",
+                                    )
+                                    as ImageProvider,
+                      ),
+            ),
+          ),
+        ],
         leading: Builder(
           builder:
               (context) => IconButton(
@@ -124,7 +189,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // Content section
           Expanded(
             child: SingleChildScrollView(
               child: Padding(

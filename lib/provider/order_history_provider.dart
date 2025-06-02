@@ -1,53 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_mobile/data/api_service.dart';
 import 'package:food_delivery_mobile/data/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class OrderHistoryProvider extends ChangeNotifier {
-  List<OrderHistory> _orderHistory = [];
+class OrderHistoryProvider with ChangeNotifier {
+  List<Order> _orderHistory = [];
+  bool _isLoading = false;
+  String? _errorMessage;
 
-  List<OrderHistory> get orderHistory => _orderHistory;
+  List<Order> get orderHistory => _orderHistory;
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
 
-  void addOrderHistory(OrderHistory orderHistory) {
-    _orderHistory.add(orderHistory);
+  Future<void> fetchOrderHistory() async {
+    _isLoading = true;
     notifyListeners();
-  }
 
-  void addDummyData() {
-    final dummyProduct1 = Product(
-      id: '1',
-      category: 'main',
-      name: 'Nasi Goreng Spesial',
-      description: "Nasi goreng dengan topping ayam, telur, dan sayuran.",
-      price: 25000,
-      imageUrl: "assets/images/food1.jpg",
-    );
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? userId = prefs.getInt('user_id');
 
-    final dummyProduct2 = Product(
-      id: '2',
-      category: 'main',
-      name: 'Mie Ayam Bakso',
-      description: "Mie ayam dengan bakso dan kuah kaldu lezat.",
-      price: 20000,
-      imageUrl: "assets/images/food2.jpg",
-    );
+      if (userId == null) {
+        throw Exception("User ID not found");
+      }
 
-    final dummyOrder1 = OrderHistory(
-      orderId: 'order1',
-      product: dummyProduct1,
-      quantity: 2,
-      totalPrice: dummyProduct1.price * 2,
-      orderDate: DateTime.now().subtract(const Duration(days: 1)),
-    );
-
-    final dummyOrder2 = OrderHistory(
-      orderId: 'order2',
-      product: dummyProduct2,
-      quantity: 1,
-      totalPrice: dummyProduct2.price,
-      orderDate: DateTime.now().subtract(const Duration(days: 2)),
-    );
-
-    _orderHistory.addAll([dummyOrder1, dummyOrder2]);
-
-    notifyListeners();
+      final orders = await ApiService().fetchUserOrders(userId);
+      _orderHistory = orders;
+      _errorMessage = null;
+    } catch (e) {
+      _errorMessage = e.toString();
+      _orderHistory = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }
