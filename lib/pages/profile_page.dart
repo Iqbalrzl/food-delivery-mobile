@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
             } else if (snapshot.hasData) {
               final profile = snapshot.data!;
               final imageUrl = profile.profileImageUrl;
-              final fixedUrl = apiService.fixLocalhostUrl(imageUrl!);
+              final fixedUrl = apiService.fixLocalhostUrl(imageUrl);
 
               return Column(
                 children: [

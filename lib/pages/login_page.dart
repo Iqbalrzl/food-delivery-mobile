@@ -149,21 +149,21 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 25),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminPage()),
-                  );
-                },
-                child: Text(
-                  "Login as Admin",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => AdminPage()),
+              //     );
+              //   },
+              //   child: Text(
+              //     "Login as Admin",
+              //     style: TextStyle(
+              //       color: Theme.of(context).colorScheme.inversePrimary,
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

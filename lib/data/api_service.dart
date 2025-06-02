@@ -8,8 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   String get base_url => dotenv.env['BASE_API_URL'] ?? ' ';
 
-  String fixLocalhostUrl(String originalUrl) {
-    return originalUrl.replaceFirst('http://127.0.0.1', 'http://10.0.2.2');
+  String fixLocalhostUrl(String? originalUrl) {
+    if (originalUrl != null)
+      return originalUrl.replaceFirst('http://127.0.0.1', 'http://10.0.2.2');
+    return "";
   }
 
   Future<Map<String, dynamic>> getProfile() async {
@@ -48,7 +50,7 @@ class ApiService {
     final url = Uri.parse('$base_url/api/profile/user/$userId');
     final response = await http.get(url);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       final data = json.decode(response.body)['data'];
       return Profile.fromJson(data);
     } else {
